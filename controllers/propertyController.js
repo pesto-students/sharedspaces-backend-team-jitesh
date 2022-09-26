@@ -1,4 +1,5 @@
 const { Property } = require("../models/model");
+const mongoose = require('mongoose')
 
 const getAllProperty = async (req, res) => {
     try {
@@ -8,11 +9,9 @@ const getAllProperty = async (req, res) => {
 
 
         const properties = await Property.find(search &&
-
         {
             $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
         }
-
         );
 
         res.json({
@@ -27,6 +26,7 @@ const getAllProperty = async (req, res) => {
 const addProperty = async (req, res) => {
     try {
         const {
+            userId,
             propertyTitle,
             propertyDescription,
             propertyImage,
@@ -37,6 +37,7 @@ const addProperty = async (req, res) => {
         } = req.body;
 
         const property = await Property.create({
+            userId,
             propertyTitle,
             propertyDescription,
             propertyImage,
@@ -58,12 +59,28 @@ const addProperty = async (req, res) => {
 
 const getPropertyById = async (req, res) => {
     const { propertyId } = req.params
+
     try {
-        const property = await Property.findOne({ _id: propertyId });
+        const property = await Property.aggregate([
+            {
+                $match: {
+                    "_id": mongoose.Types.ObjectId(propertyId)
+                }
+            },
+            {
+                $graphLookup: {
+                    from: 'spaces',
+                    startWith: '$_id',
+                    connectFromField: '_id',
+                    connectToField: 'propertyId',
+                    as: 'spaces'
+                }
+            }
+        ]);
 
         res.json({
             success: true,
-            data: property
+            data: property[0]
         });
 
     } catch (error) {

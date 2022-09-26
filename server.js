@@ -6,6 +6,7 @@ const { connectDB } = require("./config/db");
 
 const userRoute = require("./routes/userRoute");
 const propertyRoute = require("./routes/propertyRoute");
+const spaceRoute = require("./routes/spaceRoute");
 const uploadRoute = require("./routes/uploadRoute");
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.get("/", (req, res) => res.send({ status: "API running!" }));
 
 app.use("/api/user", userRoute);
 app.use("/api/property", propertyRoute);
+app.use("/api/space", spaceRoute);
 app.use("/api/image", uploadRoute);
 
 
