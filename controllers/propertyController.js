@@ -9,7 +9,7 @@ const getAllProperty = async (req, res) => {
         const properties = await Property.find();
 
         res.json({
-            status: true,
+            success: true,
             data: properties
         });
     } catch (error) {
@@ -40,7 +40,7 @@ const addProperty = async (req, res) => {
         });
 
         res.json({
-            status: true,
+            success: true,
             message: "Property added!",
             data: property
         });
@@ -50,32 +50,15 @@ const addProperty = async (req, res) => {
 };
 
 const getPropertyById = async (req, res) => {
+    const { propertyId } = req.params
     try {
-        const {
-            propertyTitle,
-            propertyDescription,
-            propertyImage,
-            lat,
-            lng,
-            address,
-            postcode,
-        } = req.body;
-
-        const property = await Property.create({
-            propertyTitle,
-            propertyDescription,
-            propertyImage,
-            lat,
-            lng,
-            address,
-            postcode
-        });
+        const property = await Property.findOne({ _id: propertyId });
 
         res.json({
-            status: true,
-            message: "Property added!",
+            success: true,
             data: property
         });
+
     } catch (error) {
         res.json({ success: false, message: "Something went wrong!" });
     }
