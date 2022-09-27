@@ -7,7 +7,6 @@ const getAllProperty = async (req, res) => {
             search
         } = req.body;
 
-
         const properties = await Property.find(search &&
         {
             $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
@@ -89,9 +88,48 @@ const getPropertyById = async (req, res) => {
 };
 
 
+const updatePropertyById = async (req, res) => {
+    const { propertyId } = req.params
+    const {
+        userId,
+        propertyTitle,
+        propertyDescription,
+        propertyImage,
+        lat,
+        lng,
+        address,
+        postcode,
+    } = req.body;
+
+    try {
+        await Property.findByIdAndUpdate(
+            { _id: propertyId },
+            {
+                userId,
+                propertyTitle,
+                propertyDescription,
+                propertyImage,
+                lat,
+                lng,
+                address,
+                postcode,
+            }
+        );
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
 
 module.exports = {
     getAllProperty,
     addProperty,
-    getPropertyById
+    getPropertyById,
+    updatePropertyById
 };
