@@ -61,9 +61,23 @@ const userLogin = async (req, res) => {
 };
 
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find()
+
+        res.json({
+            success: true,
+            data: users
+        });
+    } catch (error) {
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
 
 
 module.exports = {
     userSignUp,
-    userLogin
+    userLogin,
+    getAllUsers
 };
