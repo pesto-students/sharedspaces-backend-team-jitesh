@@ -39,12 +39,37 @@ const SpaceSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
+
+const BookingSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: "User"
+  },
+  propertyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: "Property"
+  },
+  spaceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: "Space"
+  },
+  startDate: { type: String, required: true },
+  endDate: { type: String, required: true },
+}, { timestamps: true });
+
+
+
 const User = mongoose.model("User", UserSchema);
 const Property = mongoose.model("Property", PropertySchema);
 const Space = mongoose.model("Space", SpaceSchema);
+const Booking = mongoose.model("Booking", BookingSchema);
 
 module.exports = {
   User,
   Property,
-  Space
+  Space,
+  Booking
 };

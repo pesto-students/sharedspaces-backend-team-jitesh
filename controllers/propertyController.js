@@ -7,11 +7,28 @@ const getAllProperty = async (req, res) => {
             search
         } = req.body;
 
-        const properties = await Property.find(search &&
-        {
-            $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
-        }
-        );
+        const properties = await Property.aggregate([
+            {
+                $graphLookup: {
+                    from: 'spaces',
+                    startWith: '$_id',
+                    connectFromField: '_id',
+                    connectToField: 'propertyId',
+                    as: 'spaces'
+                }
+            },
+            search ? {
+                $match: {
+                    $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
+                }
+            } : { $match: {} }
+        ]);
+
+        // const properties = await Property.find(search &&
+        // {
+        //     $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
+        // }
+        // );
 
         res.json({
             success: true,
