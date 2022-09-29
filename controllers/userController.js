@@ -4,7 +4,7 @@ const generateToken = require("../utils/generateToken");
 
 const userSignUp = async (req, res) => {
     try {
-        const { name, email, password, phoneNumber, image } = req.body;
+        const { name, email, password, phoneNumber, role, active, profileImage } = req.body;
         // generate salt to hash password
         const salt = await bcrypt.genSalt(10);
         // now we set user password to hashed password
@@ -15,7 +15,9 @@ const userSignUp = async (req, res) => {
             email,
             phoneNumber,
             password: encryptedPassword,
-            image
+            role,
+            active,
+            profileImage
         });
 
         res.json({
@@ -25,6 +27,8 @@ const userSignUp = async (req, res) => {
                 _id: user._id,
                 email: user.email,
                 name: user.name,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
                 token: generateToken(user._id)
             }
         });
@@ -49,6 +53,8 @@ const userLogin = async (req, res) => {
                     _id: user._id,
                     email: user.email,
                     name: user.name,
+                    phoneNumber: user.phoneNumber,
+                    role: user.role,
                     token: generateToken(user._id)
                 }
             });
@@ -74,10 +80,33 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const uploadUserRole = async (req, res) => {
+    const { userId } = req.params
+
+    try {
+        const user = await User.findByIdAndUpdate(
+            { _id: userId },
+            {
+                role: "Landlord"
+            }
+        );
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
 
 
 module.exports = {
     userSignUp,
     userLogin,
-    getAllUsers
+    getAllUsers,
+    uploadUserRole
 };
