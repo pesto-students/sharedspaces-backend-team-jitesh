@@ -38,6 +38,10 @@ router.post('/space/:id', upload.single('file'), async function (req, res, next)
     res.send({ success: true, data: req.file.location })
 })
 
+router.post('/amenity/:id', upload.single('file'), async function (req, res, next) {
+    res.send({ success: true, data: req.file.location })
+})
+
 
 // router.get("/list", async (req, res) => {
 

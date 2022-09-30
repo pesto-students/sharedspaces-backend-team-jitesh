@@ -17,12 +17,21 @@ const getAllProperty = async (req, res) => {
                     as: 'spaces'
                 }
             },
+            {
+                $lookup: {
+                    from: 'amenities',
+                    foreignField: '_id',
+                    localField: 'amenities',
+                    as: 'amenities'
+                }
+            },
+
             search ? {
                 $match: {
                     $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
                 }
             } : { $match: {} }
-        ]);
+        ])
 
         // const properties = await Property.find(search &&
         // {
@@ -35,14 +44,16 @@ const getAllProperty = async (req, res) => {
             data: properties
         });
     } catch (error) {
+        console.log(error)
         res.json({ success: false, message: "Something went wrong!" });
     }
 };
 
 const addProperty = async (req, res) => {
+    const { user } = req
+    const userId = user._id
     try {
         const {
-            userId,
             propertyTitle,
             propertyDescription,
             propertyImage,
@@ -50,6 +61,7 @@ const addProperty = async (req, res) => {
             lng,
             address,
             postcode,
+            amenities
         } = req.body;
 
         const property = await Property.create({
@@ -60,7 +72,8 @@ const addProperty = async (req, res) => {
             lat,
             lng,
             address,
-            postcode
+            postcode,
+            amenities
         });
 
         res.json({
@@ -91,8 +104,18 @@ const getPropertyById = async (req, res) => {
                     connectToField: 'propertyId',
                     as: 'spaces'
                 }
-            }
+            },
+            {
+                $lookup: {
+                    from: 'amenities',
+                    foreignField: '_id',
+                    localField: 'amenities',
+                    as: 'amenities'
+                }
+            },
         ]);
+
+
 
         res.json({
             success: true,
@@ -116,6 +139,7 @@ const updatePropertyById = async (req, res) => {
         lng,
         address,
         postcode,
+        amenities
     } = req.body;
 
     try {
@@ -130,6 +154,7 @@ const updatePropertyById = async (req, res) => {
                 lng,
                 address,
                 postcode,
+                amenities
             }
         );
 

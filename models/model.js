@@ -26,6 +26,7 @@ const PropertySchema = new mongoose.Schema({
     require: true,
     ref: "User"
   },
+  amenities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Amenity" }],
   propertyTitle: { type: String, required: true },
   propertyDescription: { type: String, required: true },
   propertyImage: { type: String },
@@ -72,15 +73,23 @@ const BookingSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
+const AmenitySchema = new mongoose.Schema({
+  amenityTitle: { type: String, required: true },
+  amenityImage: { type: String, required: true },
+}, { timestamps: true });
+
+
 
 const User = mongoose.model("User", UserSchema);
 const Property = mongoose.model("Property", PropertySchema);
 const Space = mongoose.model("Space", SpaceSchema);
 const Booking = mongoose.model("Booking", BookingSchema);
+const Amenity = mongoose.model("Amenity", AmenitySchema);
 
 module.exports = {
   User,
   Property,
   Space,
-  Booking
+  Booking,
+  Amenity
 };

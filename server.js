@@ -9,6 +9,7 @@ const propertyRoute = require("./routes/propertyRoute");
 const spaceRoute = require("./routes/spaceRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const uploadRoute = require("./routes/uploadRoute");
+const amenityRoute = require("./routes/amenityRoute");
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/property", propertyRoute);
 app.use("/api/space", spaceRoute);
 app.use("/api/booking", bookingRoute);
 app.use("/api/image", uploadRoute);
+app.use("/api/amenity", amenityRoute);
 
 
 app.listen(port, () => console.log(`Server started on PORT ${port}`));

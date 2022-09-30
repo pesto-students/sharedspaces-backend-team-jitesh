@@ -11,9 +11,9 @@ const router = express.Router();
 
 
 router.route("/getAll").post(getAllProperty);
-router.route("/add").post(addProperty);
+router.route("/add").post(authenticate, addProperty);
 router.route("/:propertyId").get(getPropertyById);
-router.route("/:propertyId").put(updatePropertyById);
+router.route("/:propertyId").put(authenticate, updatePropertyById);
 
 
 module.exports = router;
