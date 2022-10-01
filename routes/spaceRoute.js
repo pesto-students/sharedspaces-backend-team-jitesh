@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 router.route("/getAll").post(getAllSpace);
-router.route("/add").post(addSpace);
+router.route("/add").post(authenticate, addSpace);
 router.route("/:spaceId").get(getSpaceById);
 
 
