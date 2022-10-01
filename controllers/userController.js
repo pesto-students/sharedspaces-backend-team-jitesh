@@ -80,19 +80,44 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-const uploadUserRole = async (req, res) => {
+
+const getUser = async (req, res) => {
+    const { user } = req
+    const userId = user._id
+    try {
+        const { _id, name, email, phoneNumber, role, profileImage } = await User.findOne({ _id: userId })
+        res.json({
+            success: true,
+            data: { _id, name, email, phoneNumber, role, profileImage }
+        });
+    } catch (error) {
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+const uploadUserProfile = async (req, res) => {
     const { userId } = req.params
+    const { name, phoneNumber, password, role, profileImage } = req.body
 
     try {
         const user = await User.findByIdAndUpdate(
             { _id: userId },
             {
-                role: "Landlord"
-            }
+                name, phoneNumber, password, role, profileImage
+            },
+            { new: true }
         );
 
         res.json({
-            success: true
+            success: true,
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                profileImage: user.profileImage,
+            }
         });
 
     } catch (error) {
@@ -108,5 +133,6 @@ module.exports = {
     userSignUp,
     userLogin,
     getAllUsers,
-    uploadUserRole
+    getUser,
+    uploadUserProfile
 };
