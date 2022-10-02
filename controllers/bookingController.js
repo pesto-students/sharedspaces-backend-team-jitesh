@@ -43,7 +43,6 @@ const getAllBookingsByAdminAndLandlord = async (req, res) => {
             .populate("spaceId");
 
         if (role === "Landlord") {
-            console.log('role', role)
             let bookingsByLandlord = bookings.filter(b => b.propertyId.userId.toString() == userId.toString())
             res.json({
                 success: true,
