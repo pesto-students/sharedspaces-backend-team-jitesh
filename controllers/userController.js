@@ -29,6 +29,7 @@ const userSignUp = async (req, res) => {
                 name: user.name,
                 phoneNumber: user.phoneNumber,
                 role: user.role,
+                profileImage: user.profileImage,
                 token: generateToken(user._id)
             }
         });
@@ -55,6 +56,7 @@ const userLogin = async (req, res) => {
                     name: user.name,
                     phoneNumber: user.phoneNumber,
                     role: user.role,
+                    profileImage: user.profileImage,
                     token: generateToken(user._id)
                 }
             });
@@ -82,8 +84,7 @@ const getAllUsers = async (req, res) => {
 
 
 const getUser = async (req, res) => {
-    const { user } = req
-    const userId = user._id
+    const { _id: userId } = req.user
     try {
         const { _id, name, email, phoneNumber, role, profileImage } = await User.findOne({ _id: userId })
         res.json({

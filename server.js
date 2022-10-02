@@ -10,6 +10,7 @@ const spaceRoute = require("./routes/spaceRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const uploadRoute = require("./routes/uploadRoute");
 const amenityRoute = require("./routes/amenityRoute");
+const commonRoute = require("./routes/commonRoute");
 
 dotenv.config();
 const app = express();
@@ -30,6 +31,7 @@ app.use("/api/space", spaceRoute);
 app.use("/api/booking", bookingRoute);
 app.use("/api/image", uploadRoute);
 app.use("/api/amenity", amenityRoute);
+app.use("/api/common", commonRoute);
 
 
 app.listen(port, () => console.log(`Server started on PORT ${port}`));

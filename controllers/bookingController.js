@@ -16,6 +16,53 @@ const getAllBookings = async (req, res) => {
     }
 };
 
+const getAllBookingsByUser = async (req, res) => {
+    try {
+        const bookings = await Booking.find()
+            .populate("userId", { 'password': 0 })
+            .populate("propertyId")
+            .populate("spaceId");
+
+        res.json({
+            success: true,
+            data: bookings
+        });
+    } catch (error) {
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
+const getAllBookingsByAdminAndLandlord = async (req, res) => {
+    const { _id: userId, role } = req.user
+
+    try {
+        const bookings = await Booking.find()
+            .populate("userId", { 'password': 0 })
+            .populate("propertyId")
+            .populate("spaceId");
+
+        if (role === "Landlord") {
+            console.log('role', role)
+            let bookingsByLandlord = bookings.filter(b => b.propertyId.userId.toString() == userId.toString())
+            res.json({
+                success: true,
+                data: bookingsByLandlord
+            });
+            return false
+        }
+
+        res.json({
+            success: true,
+            data: bookings
+        });
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
 const addBooking = async (req, res) => {
     try {
         const {
@@ -67,6 +114,7 @@ const getBookingById = async (req, res) => {
 
 module.exports = {
     getAllBookings,
+    getAllBookingsByAdminAndLandlord,
     addBooking,
     getBookingById
 };
