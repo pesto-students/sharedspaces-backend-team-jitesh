@@ -12,6 +12,12 @@ const UserSchema = new mongoose.Schema({
     default: "User",
     required: true
   },
+  loginType: {
+    type: String,
+    enum: ['email', 'sso'],
+    default: "email",
+    required: true
+  },
   active: {
     type: Boolean,
     default: true,

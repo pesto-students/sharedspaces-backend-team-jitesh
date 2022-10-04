@@ -68,6 +68,51 @@ const userLogin = async (req, res) => {
     }
 };
 
+const userSocial = async (req, res) => {
+    const { name, email, phoneNumber, profileImage, loginType } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user) {
+        res.json({
+            success: true,
+            message: "Loggedin successfully!",
+            data: {
+                _id: user._id,
+                email: user.email,
+                name: user.name,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                profileImage: user.profileImage,
+                token: generateToken(user._id)
+            }
+        });
+    } else {
+        const user = await User.create({
+            name,
+            email,
+            phoneNumber,
+            password: "null",
+            profileImage,
+            loginType
+        });
+
+        res.json({
+            success: true,
+            message: "Loggedin successfully!",
+            data: {
+                _id: user._id,
+                email: user.email,
+                name: user.name,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                profileImage: user.profileImage,
+                token: generateToken(user._id)
+            }
+        });
+    }
+
+};
+
 
 const getAllUsers = async (req, res) => {
     try {
@@ -133,6 +178,7 @@ const uploadUserProfile = async (req, res) => {
 module.exports = {
     userSignUp,
     userLogin,
+    userSocial,
     getAllUsers,
     getUser,
     uploadUserProfile
