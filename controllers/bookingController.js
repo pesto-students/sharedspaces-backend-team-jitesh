@@ -17,8 +17,9 @@ const getAllBookings = async (req, res) => {
 };
 
 const getAllBookingsByUser = async (req, res) => {
+    const { _id: userId, role } = req.user
     try {
-        const bookings = await Booking.find()
+        const bookings = await Booking.find({ userId: userId })
             .populate("userId", { 'password': 0 })
             .populate("propertyId")
             .populate("spaceId");
@@ -72,7 +73,7 @@ const addBooking = async (req, res) => {
             endDate,
         } = req.body;
 
-        const space = await Booking.create({
+        const booking = await Booking.create({
             userId,
             propertyId,
             spaceId,
@@ -82,8 +83,8 @@ const addBooking = async (req, res) => {
 
         res.json({
             success: true,
-            message: "Booking added!",
-            data: space
+            message: "Booking Confirmed!",
+            data: booking
         });
     } catch (error) {
         console.log(error)
@@ -114,6 +115,7 @@ const getBookingById = async (req, res) => {
 module.exports = {
     getAllBookings,
     getAllBookingsByAdminAndLandlord,
+    getAllBookingsByUser,
     addBooking,
     getBookingById
 };
