@@ -1,6 +1,7 @@
 const { User } = require("../models/model");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
+const mongoose = require('mongoose')
 
 const userSignUp = async (req, res) => {
     try {
@@ -172,6 +173,84 @@ const uploadUserProfile = async (req, res) => {
     }
 };
 
+const getAllLikedProperty = async (req, res) => {
+    const { _id: userId } = req.user
+    try {
+        const user = await User.aggregate([
+            {
+                $lookup: {
+                    from: 'properties',
+                    foreignField: '_id',
+                    localField: 'likedProperties',
+                    as: 'likedProperties'
+                },
+            },
+            {
+                $match: {
+                    _id: mongoose.Types.ObjectId(userId)
+                }
+            }
+        ])
+
+        if (user && user.length > 0) {
+            const properties = await user[0].likedProperties
+            res.json({
+                success: true,
+                data: properties
+            });
+        } else {
+            res.json({
+                success: true,
+                data: []
+            });
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+}
+
+
+
+const likedProperty = async (req, res) => {
+    const { _id: userId } = req.user
+    const { propertyId } = req.params
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { $push: { likedProperties: propertyId } },
+            { new: true }
+        );
+
+        res.json({
+            success: true
+        });
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
+const unLikedProperty = async (req, res) => {
+    const { _id: userId } = req.user
+    const { propertyId } = req.params
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { likedProperties: propertyId } },
+            { new: true }
+        );
+
+        res.json({
+            success: true
+        });
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
 
 
 
@@ -181,5 +260,8 @@ module.exports = {
     userSocial,
     getAllUsers,
     getUser,
-    uploadUserProfile
+    uploadUserProfile,
+    getAllLikedProperty,
+    likedProperty,
+    unLikedProperty
 };

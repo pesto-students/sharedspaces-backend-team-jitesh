@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
-  }
+  },
+  likedProperties: [{ type: mongoose.Schema.Types.ObjectId, ref: "Property" }],
 }, { timestamps: true });
 
 
