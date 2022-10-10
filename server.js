@@ -25,13 +25,13 @@ const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => res.send({ status: "API running!" }));
 
-app.use("/api/user", userRoute);
-app.use("/api/property", propertyRoute);
-app.use("/api/space", spaceRoute);
-app.use("/api/booking", bookingRoute);
-app.use("/api/image", uploadRoute);
-app.use("/api/amenity", amenityRoute);
-app.use("/api/common", commonRoute);
+app.use("/user", userRoute);
+app.use("/property", propertyRoute);
+app.use("/space", spaceRoute);
+app.use("/booking", bookingRoute);
+app.use("/image", uploadRoute);
+app.use("/amenity", amenityRoute);
+app.use("/common", commonRoute);
 
 
 app.listen(port, () => console.log(`Server started on PORT ${port}`));
