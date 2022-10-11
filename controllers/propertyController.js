@@ -1,13 +1,14 @@
-const { Property } = require("../models/model");
+const { Property, User } = require("../models/model");
 const mongoose = require('mongoose')
 
 const getAllProperty = async (req, res) => {
     try {
         const {
+            userId,
             search
         } = req.body;
 
-        const properties = await Property.aggregate([
+        let properties = await Property.aggregate([
             {
                 $graphLookup: {
                     from: 'spaces',
@@ -25,13 +26,39 @@ const getAllProperty = async (req, res) => {
                     as: 'amenities'
                 }
             },
-
             search ? {
                 $match: {
                     $or: [{ propertyTitle: { $regex: search, $options: 'i' } }, { address: { $regex: search, $options: 'i' } }]
                 }
             } : { $match: {} }
         ])
+
+        if (userId) {
+            // Attach likedProperty key by User
+
+            const user = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'properties',
+                        foreignField: '_id',
+                        localField: 'likedProperties',
+                        as: 'likedProperties'
+                    },
+                },
+                {
+                    $match: {
+                        _id: mongoose.Types.ObjectId(userId)
+                    }
+                }
+            ])
+
+            properties = properties.map(property =>
+                user[0].likedProperties.some(likedProperty => property._id.toString() === likedProperty._id.toString())
+                    ? ({ ...property, likedProperty: true })
+                    : ({ ...property, likedProperty: false })
+            )
+        }
+
 
         res.json({
             success: true,
@@ -120,7 +147,7 @@ const addProperty = async (req, res) => {
 };
 
 const getPropertyById = async (req, res) => {
-    const { propertyId } = req.params
+    const { propertyId, userId } = req.body
 
     try {
         const property = await Property.aggregate([
@@ -148,14 +175,37 @@ const getPropertyById = async (req, res) => {
             },
         ]);
 
+        let propertyDetails = property[0]
 
+        if (userId) {
+            // Attach likedProperty key by User
+
+            const user = await User.aggregate([
+                {
+                    $lookup: {
+                        from: 'properties',
+                        foreignField: '_id',
+                        localField: 'likedProperties',
+                        as: 'likedProperties'
+                    },
+                },
+                {
+                    $match: {
+                        _id: mongoose.Types.ObjectId(userId)
+                    }
+                }
+            ])
+
+            propertyDetails.likedProperty = user[0].likedProperties.some(likedProperty => propertyId === likedProperty._id.toString()) ? true : false
+        }
 
         res.json({
             success: true,
-            data: property[0]
+            data: propertyDetails
         });
 
     } catch (error) {
+        console.log(error)
         res.json({ success: false, message: "Something went wrong!" });
     }
 };
