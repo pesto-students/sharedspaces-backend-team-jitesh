@@ -253,6 +253,52 @@ const unLikedProperty = async (req, res) => {
 };
 
 
+const changePassword = async (req, res) => {
+    const { _id: userId } = req.user
+    const { currentPassword, newPassword } = req.body
+
+    try {
+        const user = await User.findOne({ _id: userId });
+        if (user) {
+            // check user password with hashed password stored in the database
+            const validPassword = await bcrypt.compare(currentPassword, user.password);
+
+            if (!validPassword) {
+                res.json({ success: false, message: "Please enter valid password!" });
+
+            }
+
+
+            // generate salt to hash password
+            const salt = await bcrypt.genSalt(10);
+            // now we set user password to hashed password
+            let encryptedPassword = await bcrypt.hash(newPassword, salt);
+
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: userId },
+                {
+                    password: encryptedPassword
+                },
+                { new: true }
+            )
+
+            if (updatedUser) {
+                res.json({
+                    success: true,
+                    message: "Password Changed Successfully!"
+                });
+            } else {
+                res.json({ success: false, message: "Something went wrong!" });
+            }
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
 
 module.exports = {
     userSignUp,
@@ -263,5 +309,6 @@ module.exports = {
     uploadUserProfile,
     getAllLikedProperty,
     likedProperty,
-    unLikedProperty
+    unLikedProperty,
+    changePassword
 };
