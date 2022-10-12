@@ -8,7 +8,8 @@ const {
   userSocial,
   getAllLikedProperty,
   likedProperty,
-  unLikedProperty
+  unLikedProperty,
+  changePassword
 } = require("../controllers/userController");
 const { authenticate, admin } = require("../middleware/authMiddleware");
 
@@ -23,6 +24,8 @@ router.route("/updateUserProfile/:userId").put(authenticate, uploadUserProfile);
 router.route("/liked").get(authenticate, getAllLikedProperty);
 router.route("/liked/:propertyId").get(authenticate, likedProperty);
 router.route("/unliked/:propertyId").get(authenticate, unLikedProperty);
+router.route("/change-password").post(authenticate, changePassword);
+
 
 
 
