@@ -78,9 +78,40 @@ const getSpaceById = async (req, res) => {
 };
 
 
+const updateSpaceById = async (req, res) => {
+    const { spaceId } = req.params
+    const {
+        spaceTitle,
+        spaceDescription,
+        spaceImage,
+        noOfDesks
+    } = req.body;
+
+    try {
+        await Space.findByIdAndUpdate(
+            { _id: spaceId },
+            {
+                spaceTitle,
+                spaceDescription,
+                spaceImage,
+                noOfDesks
+            }
+        );
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
 
 module.exports = {
     getAllSpace,
     addSpace,
-    getSpaceById
+    getSpaceById,
+    updateSpaceById
 };
