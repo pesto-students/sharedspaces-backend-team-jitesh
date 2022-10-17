@@ -50,10 +50,50 @@ const getAmenityById = async (req, res) => {
     }
 };
 
+const updateAmenityById = async (req, res) => {
+    const { amenityId } = req.params
+    const {
+        amenityTitle,
+        amenityImage,
+    } = req.body;
 
+    try {
+        await Amenity.findByIdAndUpdate(
+            { _id: amenityId },
+            {
+                amenityTitle,
+                amenityImage,
+            }
+        );
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+const deleteAmenityById = async (req, res) => {
+    const { amenityId } = req.params
+
+    try {
+        await Amenity.deleteOne({ _id: amenityId });
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
 
 module.exports = {
     getAllAmenity,
     addAmenity,
-    getAmenityById
+    getAmenityById,
+    updateAmenityById,
+    deleteAmenityById
 };

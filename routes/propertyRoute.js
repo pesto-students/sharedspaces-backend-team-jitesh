@@ -4,7 +4,8 @@ const {
     getAllPropertyForAdminAndLordlord,
     addProperty,
     getPropertyById,
-    updatePropertyById
+    updatePropertyById,
+    deletePropertyById
 } = require("../controllers/propertyController");
 const { authenticate } = require("../middleware/authMiddleware");
 
@@ -16,6 +17,7 @@ router.route("/admin/getAll").post(authenticate, getAllPropertyForAdminAndLordlo
 router.route("/add").post(authenticate, addProperty);
 router.route("/getOne").post(getPropertyById);
 router.route("/:propertyId").put(authenticate, updatePropertyById);
+router.route("/:propertyId").delete(authenticate, deletePropertyById);
 
 
 
