@@ -109,9 +109,27 @@ const updateSpaceById = async (req, res) => {
 };
 
 
+const deleteSpaceById = async (req, res) => {
+    const { spaceId } = req.params
+
+    try {
+        await Space.deleteOne({ _id: spaceId });
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
+
+
+
 module.exports = {
     getAllSpace,
     addSpace,
     getSpaceById,
-    updateSpaceById
+    updateSpaceById,
+    deleteSpaceById
 };

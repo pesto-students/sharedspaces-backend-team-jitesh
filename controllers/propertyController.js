@@ -251,11 +251,26 @@ const updatePropertyById = async (req, res) => {
 };
 
 
+const deletePropertyById = async (req, res) => {
+    const { propertyId } = req.params
+
+    try {
+        await Property.deleteOne({ _id: propertyId });
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "Something went wrong!" });
+    }
+};
 
 module.exports = {
     getAllProperty,
     getAllPropertyForAdminAndLordlord,
     addProperty,
     getPropertyById,
-    updatePropertyById
+    updatePropertyById,
+    deletePropertyById
 };
