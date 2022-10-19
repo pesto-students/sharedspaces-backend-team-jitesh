@@ -1,4 +1,4 @@
-const { Space, Property } = require("../models/model");
+const { Space, Property, User } = require("../models/model");
 
 const getAllSpace = async (req, res) => {
     try {
@@ -64,15 +64,20 @@ const getSpaceById = async (req, res) => {
 
         const otherSpaces = property[0].spaces.filter(s => s._id != spaceId)
 
+        const { _id, name, email, phoneNumber, role, profileImage } = await User.findOne({ _id: space.propertyId.userId })
+        const ownerDetails = { _id, name, email, phoneNumber, role, profileImage }
+        console.log('ownerDetails', ownerDetails)
         res.json({
             success: true,
             data: {
                 space,
-                otherSpaces
+                otherSpaces,
+                ownerDetails
             }
         });
 
     } catch (error) {
+        console.log(error)
         res.json({ success: false, message: "Something went wrong!" });
     }
 };

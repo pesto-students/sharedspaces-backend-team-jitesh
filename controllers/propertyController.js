@@ -179,7 +179,6 @@ const getPropertyById = async (req, res) => {
 
         if (userId) {
             // Attach likedProperty key by User
-
             const user = await User.aggregate([
                 {
                     $lookup: {
@@ -198,6 +197,9 @@ const getPropertyById = async (req, res) => {
 
             propertyDetails.likedProperty = user[0].likedProperties.some(likedProperty => propertyId === likedProperty._id.toString()) ? true : false
         }
+
+        const { _id, name, email, phoneNumber, role, profileImage } = await User.findOne({ _id: propertyDetails.userId })
+        propertyDetails.ownerDetails = { _id, name, email, phoneNumber, role, profileImage }
 
         res.json({
             success: true,
