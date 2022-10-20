@@ -66,7 +66,7 @@ const getSpaceById = async (req, res) => {
 
         const { _id, name, email, phoneNumber, role, profileImage } = await User.findOne({ _id: space.propertyId.userId })
         const ownerDetails = { _id, name, email, phoneNumber, role, profileImage }
-        console.log('ownerDetails', ownerDetails)
+
         res.json({
             success: true,
             data: {
@@ -120,7 +120,8 @@ const deleteSpaceById = async (req, res) => {
     try {
         await Space.deleteOne({ _id: spaceId });
         res.json({
-            success: true
+            success: true,
+            message: "Space Deleted Successfully!"
         });
 
     } catch (error) {

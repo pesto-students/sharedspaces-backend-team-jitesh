@@ -81,7 +81,8 @@ const deleteAmenityById = async (req, res) => {
     try {
         await Amenity.deleteOne({ _id: amenityId });
         res.json({
-            success: true
+            success: true,
+            message: "Amenity Deleted Successfully!"
         });
 
     } catch (error) {
