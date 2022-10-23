@@ -244,7 +244,8 @@ const updatePropertyById = async (req, res) => {
         );
 
         res.json({
-            success: true
+            success: true,
+            message: "Property updated!"
         });
 
     } catch (error) {

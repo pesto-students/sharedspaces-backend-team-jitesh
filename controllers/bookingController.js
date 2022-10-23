@@ -81,6 +81,12 @@ const addBooking = async (req, res) => {
             endDate,
         });
 
+        await Space.findOneAndUpdate(
+            { _id: spaceId },
+            { $push: { bookedDates: { startDate, endDate } } },
+            { new: true }
+        );
+
         res.json({
             success: true,
             message: "Booking Confirmed!",

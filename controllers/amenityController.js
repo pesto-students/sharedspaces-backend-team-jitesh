@@ -67,7 +67,8 @@ const updateAmenityById = async (req, res) => {
         );
 
         res.json({
-            success: true
+            success: true,
+            message: "Amenity updated!"
         });
 
     } catch (error) {

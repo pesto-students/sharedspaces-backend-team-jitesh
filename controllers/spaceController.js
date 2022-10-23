@@ -104,7 +104,8 @@ const updateSpaceById = async (req, res) => {
         );
 
         res.json({
-            success: true
+            success: true,
+            message: "Space updated!"
         });
 
     } catch (error) {
