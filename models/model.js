@@ -55,6 +55,7 @@ const SpaceSchema = new mongoose.Schema({
   spaceDescription: { type: String, required: true },
   spaceImage: { type: String },
   noOfDesks: { type: String },
+  bookedDates: [{ startDate: String, endDate: String }],
 }, { timestamps: true });
 
 
