@@ -1,4 +1,4 @@
-const { Property, User } = require("../models/model");
+const { Property, User, Booking, Space } = require("../models/model");
 const mongoose = require('mongoose')
 
 const getAllProperty = async (req, res) => {
@@ -259,6 +259,8 @@ const deletePropertyById = async (req, res) => {
 
     try {
         await Property.deleteOne({ _id: propertyId });
+        await Booking.deleteMany({ propertyId: propertyId })
+        await Space.deleteMany({ propertyId: propertyId })
         res.json({
             success: true,
             message: "Property Deleted Successfully!"
