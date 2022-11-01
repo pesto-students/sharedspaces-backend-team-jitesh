@@ -1,4 +1,4 @@
-const { Space, Property, User } = require("../models/model");
+const { Space, Property, User, Booking } = require("../models/model");
 
 const getAllSpace = async (req, res) => {
     try {
@@ -120,6 +120,7 @@ const deleteSpaceById = async (req, res) => {
 
     try {
         await Space.deleteOne({ _id: spaceId });
+        await Booking.deleteMany({ spaceId: spaceId })
         res.json({
             success: true,
             message: "Space Deleted Successfully!"
