@@ -1,21 +1,69 @@
-# Pesto Assignments
+# SharedSpace | Backend
 
-Welcome to Pesto assignments.
+![SharedSpace Logo](http://ec2-43-205-207-124.ap-south-1.compute.amazonaws.com/assets/images/logo-black.png)
 
+SharedSpace is a platform that provides a wide variety of office and meeting space in your own city and makes interaction between the property owner and the person who needs a good space to work and meet.
 
-## How to solve assignments
+- Brings all space at one platform which suits your jobs and makes you feel high.
+- Provides the ultimate flexibility in terms of work environment.
+- Provides coworking offices that are a match for your company’s culture
 
-Weekly Assignments will be shared by your mentor or instructor.
+# Table of Contents
 
-Make sure master or main branch is protected and you are not able to push any code directly to master.
+1. [Demo](#demo)
+2. [Installation](#installation)
+3. [Technology Stack](#technology-stack)
+4. [Authors](#authors)
+5. [License](#license)
 
-- Clone this repo to your local.
-- Checkout to new branch for submission. Suggestion you can name new branch week wise - branch for week 1 assignment can be week1
+## Demo
+
+[SharedSpace Demo](http://ec2-43-205-207-124.ap-south-1.compute.amazonaws.com)
+
+Please Note:
+
+1. We recommend using this app in any browser other than Microsoft Edge
+
+**Test Credentials for SharedSpace Users:**
+| Role | Email / Username | Password |
+| ---- | ------------------------ | ----------- |
+| User | `guestUser@gmail.com` | `123456` |
+| Landlord | `guestLandlord@gmail.com` | `123456` |
+
+- [Login as Guest User/Landlord](http://ec2-43-205-207-124.ap-south-1.compute.amazonaws.com/login)
+
+## Installation
+
+- Fork or directly clone this repository to your local machine
+
+- Copy the .env.example to .env file and configure the .env file
+
+- Run the below command to install the packages in package.json
+
 ```bash
-git checkout -b week1
+npm install
 ```
-- Create Assignment week folder in root directory(if it doesn't exist) for eg. for solving week 1 assignment create folder with name "week1".
-- You can create subfolders in main week(week1) folder if required.
-- Add proper readme [(How to Write proper readme](https://meakaakka.medium.com/a-beginners-guide-to-writing-a-kickass-readme-7ac01da88ab3) )in week's folder or subfolder explaining about assignment, how to run assignment and any other instructions. 
-- Raise a PR against master and add your mentor as reviewer
-- Resolve PR comments if any and once your mentor approves your PR, Merge it.
+
+- Run the below command to start the app
+
+```bash
+ npm start
+```
+
+## Technology Stack
+
+We have used MERN stack to develop the Application.
+
+- [Node JS](https://nodejs.org/en/)
+- [Express JS](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+
+## Authors
+
+- [Pradeep Malviya](https://github.com/pradeepmalvi)
+- [Rahul Kumar](https://github.com/rahul0218)
+- [Shubham Sharma](https://github.com/shubham2580)
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
